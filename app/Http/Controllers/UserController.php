@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -21,7 +22,6 @@ class UserController extends Controller
     
         if($user){
             if ($user->email != $data['email']) {
-                // Validate unique email if it's updated
                 $request->validate([
                     'email' => 'unique:users,email',
                 ]);
@@ -33,7 +33,6 @@ class UserController extends Controller
                 'email' => $data['email'],
             ]);
             $request->session()->put('user-token',$user);
-            // return redirect("/profile");
             return redirect("/dashboard");
         }else{
             return response()->json(['message' => 'User not registered!'], 404);
@@ -47,16 +46,12 @@ class UserController extends Controller
             ]); 
     
             $user = DB::table('users')->where('email', $data['email'])->first();
-            if ($user && $data['password'] === $user->password) {
-                // return response()->json(['message' => 'Login successful', 'data' => $user], 200);
+            if ($user && Hash::check($data['password'], $user->password)) {
                 $request->session()->put('user-token',$user);
                 return redirect("/dashboard");
-                // return redirect("/profile");
             } else {
-                // Invalid credentials
-                return response()->json(['message' => 'Invalid credentials'], 401);
+                return redirect("/login")->with('message','Invalid Credentials 😒!');
             }
-            // return json_encode($data);
         }
     
         public function handleRegister(Request $request) {
@@ -65,28 +60,15 @@ class UserController extends Controller
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:3|max:15',
             ]);
-        
-            // Check if the user with the given email already exists
-            $existingUser = DB::table('users')->where('email', $data['email'])->first();
-        
-            if ($existingUser) {
-                // User with the given email already exists
-                return response()->json(['message' => 'Email already registered'], 422);
-            }
-        
-            // Hash the password before storing it in the database
-            // $hashedPassword = Hash::make($data['password']);
+            
+            $hashedPassword = Hash::make($data['password']);
         
             // Insert a new record into the database
             $user = DB::table('users')->insert([
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'password' => $data['password'],
-                // 'user_id'=>session('user-token')->id
+                'password' => $hashedPassword,
             ]);
-        
-            // return response()->json(['message' => 'Registration successful'], 201);
-            // $request->session()->put('estore-user-token',$user);
             return redirect("/login");
         }
 

@@ -47,7 +47,7 @@ class User extends Authenticatable
 
     public function todos():HasMany
     {
-       return $this->hasMany(Todo::class);
+       return $this->hasMany(Todo::class, 'user_id');
     }
 
     public function posts():HasMany

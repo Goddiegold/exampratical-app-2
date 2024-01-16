@@ -44,13 +44,22 @@ Route::post("/handle-login",[UserController::class, "handleLogin"]);
 Route::post("/handle-register",[UserController::class, "handleRegister"]);
 
 Route::get('/add-todo', function () {
+    if(session()->has('user-token')){
     return view('add_todo');
+    }else{
+        return redirect("/login");
+    }
 });
 
 Route::post('handle-add-todo',[TodoController::class,'handleAddTodo']);
 Route::put('/handle-edit-todo/{todo}',[TodoController::class,'handleEditTodo']);
 
-Route::get('/edit-todo/{post}',[TodoController::class, 'editTodo']);
+Route::get('/delete-todo/{todo}',[TodoController::class,'deleteTodo']);
+
+
+Route::get('/edit-todo/{todo}',[TodoController::class, 'editTodo']);
+
+Route::get('/view-todo/{todo}',[TodoController::class, 'viewTodo']);
 
 Route::get('/logout',function(){
     if(session()->has('user-token')){
