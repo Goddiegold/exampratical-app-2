@@ -37,7 +37,7 @@ Route::get("/register",  function(){
 
 Route::get("/profile",[UserController::class, "getUserProfile"])->name('dashboard');
 
-Route::get("/dashboard",[TodoController::class, "1s"])->name('dashboard');
+Route::get("/dashboard",[TodoController::class, "getTodos"])->name('dashboard');
 
 Route::post("/handle-login",[UserController::class, "handleLogin"]);
 
@@ -50,7 +50,7 @@ Route::get('/add-todo', function () {
 Route::post('handle-add-todo',[TodoController::class,'handleAddTodo']);
 Route::put('/handle-edit-todo/{todo}',[TodoController::class,'handleEditTodo']);
 
-Route::get('/edit-todo/{todo}',[TodoController::class, 'editTodo']);
+Route::get('/edit-todo/{post}',[TodoController::class, 'editTodo']);
 
 Route::get('/logout',function(){
     if(session()->has('user-token')){
@@ -58,12 +58,4 @@ Route::get('/logout',function(){
         return redirect("/login");
     }
 })->name('logout');
-
-
-Route::get("/favour", function(){
-    // echo "FAvour";s
-
-// return "Favour";
-return view("favour");
-});
 

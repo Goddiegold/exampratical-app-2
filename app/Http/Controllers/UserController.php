@@ -82,7 +82,7 @@ class UserController extends Controller
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => $data['password'],
-                'user_id'=>session('user-token')->id
+                // 'user_id'=>session('user-token')->id
             ]);
         
             // return response()->json(['message' => 'Registration successful'], 201);

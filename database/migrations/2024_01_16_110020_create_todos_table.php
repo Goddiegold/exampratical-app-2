@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->unsignedBigInteger('user_id')->index();
             $table->text('description');
             $table->string('level');
             $table->date('due_date');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
-            // $table->foreign('user_id')->refrences('id')->on('users')->onDelete('cascade');
         });
     }
 
