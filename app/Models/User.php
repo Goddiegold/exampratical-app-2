@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Post;
+// use App\Models\Post;
 use App\Models\Todo;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -50,8 +50,8 @@ class User extends Authenticatable
        return $this->hasMany(Todo::class, 'user_id');
     }
 
-    public function posts():HasMany
-    {
-       return $this->hasMany(Post::class,'user_id');
-    }
+    // public function posts():HasMany
+    // {
+    //    return $this->hasMany(Post::class,'user_id');
+    // }
 }

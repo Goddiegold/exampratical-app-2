@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,11 +13,6 @@ class TodoController extends Controller
 {
     if (session()->has('user-token')) {
         $todosQuery = Todo::where('user_id', session('user-token')->id)->with('user');
-
-//         $originalString = "Hello World";
-// $lowercaseString = strtolower($originalString);
-
-// echo $;lowercaseString
 
         // Filter by level
         $level = $request->input("level");
@@ -47,7 +41,7 @@ class TodoController extends Controller
             'description'=>'required|string',
         ]); 
 
-        $post = Todo::create([
+        $todo = Todo::create([
             'title'=>$data['title'],
             'description'=>$data['description'],
             'level'=>$data['level'],
